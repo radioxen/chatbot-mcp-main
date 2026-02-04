@@ -1,0 +1,20 @@
+Deployment Info
+===============
+Timestamp: Fri Jul 11 23:39:06 2025
+Debug Mode: True
+Duration: 14.10 seconds
+
+Running Services:
+  streamlit: PID 52490
+
+Access URLs:
+  Streamlit: http://localhost:8501
+  Slack Bot: Active (responds to @mentions and /voxies)
+
+Logs:
+  Streamlit: tail -f logs/streamlit.log
+  Slack Bot: tail -f logs/slack_bot.log
+  CSV Logs: logs/*_operations.csv, logs/*_errors.csv, logs/*_performance.csv
+
+Stop Services:
+  python deploy.py --stop

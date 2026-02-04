@@ -1,0 +1,1 @@
+mcp-snowflake-server==0.4.0 

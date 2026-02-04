@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  hostclient:
+    build: ./client
+    container_name: hostclient
+    restart: always
+    volumes:
+      - ./client/:/app                # keeps hot-reload for Streamlit code
+      - ./:/workspace:ro              # exposes agents/, tests/, etc.
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app:/workspace     # lets Python see both trees
+    ports:
+      - "8501:8501"
+    command: >
+      streamlit run app.py
+
+  slack-bot:
+    build: ./slack_bot
+    container_name: voxies-slack-bot
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      # Slack-specific environment variables
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_APP_TOKEN=${SLACK_APP_TOKEN}
+      - ALLOWED_DOMAIN=${ALLOWED_DOMAIN:-alwaysgeekygames.com}
+      - PYTHONPATH=/workspace
+    volumes:
+      - ./:/workspace:ro              # exposes entire repo
+    depends_on:
+      - hostclient
+    command: python bot.py
